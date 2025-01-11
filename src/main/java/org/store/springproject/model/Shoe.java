@@ -33,6 +33,21 @@ public class Shoe {
     @Column(name = "price", nullable = false)
     private double price;
 
+    public Shoe(String shoeName, int size, int stock, double price) {
+        this.shoeName = shoeName;
+        this.size = size;
+        this.stock = stock;
+        this.price = price;
+    }
+
+//    public Shoe(String shoeName, int size, int stock, double price, Long id) {
+//        this.shoeName = shoeName;
+//        this.size = size;
+//        this.stock = stock;
+//        this.price = price;
+//        this.id = id;
+//    }
+
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false) // Foreign key to Category
     private Category category;
