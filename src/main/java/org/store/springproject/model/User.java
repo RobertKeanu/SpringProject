@@ -17,8 +17,8 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name = "userid")
-    private int userid;
+    @Column(name = "id")
+    private int id;
 
     @Column(name = "username", nullable = false, unique = true)
     @Size(min = 5, max = 10)
@@ -33,15 +33,19 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
 
-    public User() {
-
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 
     public User(int userid,String username, String password) {
         this.username = username;
         this.password = password;
-        this.userid = userid;
+        this.id = userid;
     }
+    public User()
+    {}
+
     @Override
     public String getUsername() {
         return this.username;

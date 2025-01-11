@@ -10,7 +10,8 @@ import java.util.List;
 
 @Repository
 public interface PaymentMethodRepository extends CrudRepository<PaymentMethod, Long> {
-    List<PaymentMethod> findByType(String type);
+    @Query("select pm from PaymentMethod pm where pm.method = :method")
+    List<PaymentMethod> findByType(String method);
 
     //nu cred ca merge
     @Query("select distinct pm from PaymentMethod pm join Order o on pm.id = o.id where o.price > :minTotalPrice")

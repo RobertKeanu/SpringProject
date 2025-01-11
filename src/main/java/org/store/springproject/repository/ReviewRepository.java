@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ReviewRepository extends CrudRepository<Review, Integer> {
-    List<Review> findByUser_Id(Long userId);
+    List<Review> findByUser_Id(Integer userId);
 
     @Query("select r from Review r where r.review >= :minRating")
     List<Review> findByMinRating(@Param("minRating") int minRating);

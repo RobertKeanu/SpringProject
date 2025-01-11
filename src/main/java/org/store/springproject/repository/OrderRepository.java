@@ -12,4 +12,7 @@ import java.util.List;
 public interface OrderRepository extends CrudRepository<Order, Integer> {
     @Query("SELECT o FROM Order o WHERE o.price > :minTotalPrice")
     List<Order> findByMinTotalPrice(@Param("minTotalPrice") double minTotalPrice);
+
+    @Query("SELECT o FROM Order o JOIN o.shoes s WHERE s.id = :shoeId AND o.paymentMethod.id = :paymentMethodId")
+    List<Order> findByShoeIdAndPaymentId(@Param("shoeId") Long shoeId, @Param("paymentId") Long paymentId);
 }
