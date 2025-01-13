@@ -5,7 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.store.springproject.dto.OrderRequestDto;
 import org.store.springproject.exception.NoOrderFoundException;
+import org.store.springproject.exception.PaymentMethodNotFoundException;
+import org.store.springproject.exception.ShoeNotFoundException;
+import org.store.springproject.exception.UserNotFoundException;
 import org.store.springproject.model.Order;
 import org.store.springproject.model.Shoe;
 import org.store.springproject.service.OrderService;
@@ -22,10 +26,16 @@ public class OrderController {
     private final ShoeService shoeService;
 
     @PostMapping("/create-order")
-    public ResponseEntity<Order> placeOrder(@RequestBody Order order) {
-        Order placeOrder = orderService.placeOrder(order);
-        return ResponseEntity.status(HttpStatus.CREATED).body(placeOrder);
+    public ResponseEntity<Order> placeOrder(@RequestBody OrderRequestDto orderDto) {
+        try {
+            // Validate and create order
+            Order order = orderService.placeOrder(orderDto.getUsername(), orderDto.getShoeIds(), orderDto.getPaymentMethodId());
+            return ResponseEntity.status(HttpStatus.CREATED).body(order);
+        } catch (ShoeNotFoundException | PaymentMethodNotFoundException | UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
+
     @RequestMapping(value = "/{orderId}/delete-order-by-id", method = RequestMethod.DELETE)
     public ResponseEntity<Void> cancelOrder(@PathVariable Integer orderId)
     {

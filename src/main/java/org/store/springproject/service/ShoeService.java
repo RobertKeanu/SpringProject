@@ -41,6 +41,7 @@ public class ShoeService {
     public Optional<Shoe> findById(Long shoeId) {
         return shoeRepository.findById(shoeId);
     }
+
     public Shoe addShoe(String shoeName, int size, int stock, double price) {
         if(shoeRepository.findByShoeName(shoeName).isPresent()) {
             throw new ShoeAlreadyExistsException();

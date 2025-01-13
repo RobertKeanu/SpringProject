@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 import org.store.springproject.exception.OrderNotFoundException;
 import org.store.springproject.exception.PaymentMethodNotFoundException;
 import org.store.springproject.exception.ShoeNotFoundException;
+import org.store.springproject.exception.UserNotFoundException;
 import org.store.springproject.model.Order;
 import org.store.springproject.model.PaymentMethod;
 import org.store.springproject.model.Shoe;
+import org.store.springproject.model.User;
 import org.store.springproject.repository.OrderRepository;
 import org.store.springproject.service.PaymentService;
 import org.store.springproject.service.ShoeService;
@@ -21,6 +23,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final ShoeService shoeService;
     private final PaymentService paymentService;
+    private final UserService userService;
 
     public List<Order> findByMinTotalPrice(double minTotalPrice) {
         return orderRepository.findByMinTotalPrice(minTotalPrice);
@@ -30,14 +33,39 @@ public class OrderService {
         PaymentMethod paymentMethod = paymentService.findPaymentMethodById(paymentId).orElseThrow(PaymentMethodNotFoundException::new);
         return orderRepository.findByShoeIdAndPaymentId(shoe.getId(), (long) paymentMethod.getId()); // nu stiu daca merge
      }
-     public Order placeOrder(Order order) {
-        double totalPrice = order.getShoes().stream()
+    public Order placeOrder(String userName, List<Long> shoeIds, Long paymentId) {
+        // Validate the user by name
+        User user = userService.findByUsername(userName)
+                .orElseThrow(() -> new UserNotFoundException());
+
+        // Validate and fetch the shoes
+        List<Shoe> shoes = shoeIds.stream()
+                .map(shoeId -> shoeService.findById(shoeId)
+                        .orElseThrow(() -> new ShoeNotFoundException("Shoe not found with ID: " + shoeId)))
+                .toList();
+
+        // Validate the payment method
+        PaymentMethod paymentMethod = paymentService.findPaymentMethodById(paymentId)
+                .orElseThrow(() -> new PaymentMethodNotFoundException());
+
+        // Calculate the total price
+        double totalPrice = shoes.stream()
                 .mapToDouble(Shoe::getPrice)
                 .sum();
+
+        // Create and save the order
+        Order order = new Order();
+        order.setUser(user);
+        order.setShoes(shoes);
+        order.setPaymentMethod(paymentMethod);
         order.setPrice(totalPrice);
+        order.setStatus("PLACED"); // Default status for a new order
+
         return orderRepository.save(order);
-     }
-     public void cancelOrder(Integer orderId) {
+    }
+
+
+    public void cancelOrder(Integer orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(() -> new OrderNotFoundException());
         orderRepository.delete(order);
      }

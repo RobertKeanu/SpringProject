@@ -20,5 +20,8 @@ public class CategoryService {
         //Optional<Shoe> shoe = shoeService.findById(shoeId);
         return categoryRepository.findById(shoeId);
     }
-
+    public Category createCategory(Category category) {
+       //Category category = new Category(categoryName);
+        return categoryRepository.save(category);
+    }
 }
