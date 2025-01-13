@@ -49,7 +49,7 @@ public class Shoe {
 //    }
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id") // Foreign key to Category
     private Category category;
 
     @OneToMany(mappedBy = "shoe", cascade = CascadeType.ALL, orphanRemoval = true)
