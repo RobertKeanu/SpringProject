@@ -34,32 +34,32 @@ public class OrderService {
         return orderRepository.findByShoeIdAndPaymentId(shoe.getId(), (long) paymentMethod.getId()); // nu stiu daca merge
      }
     public Order placeOrder(String userName, List<Long> shoeIds, Long paymentId) {
-        // Validate the user by name
+
         User user = userService.findByUsername(userName)
                 .orElseThrow(() -> new UserNotFoundException());
 
-        // Validate and fetch the shoes
+
         List<Shoe> shoes = shoeIds.stream()
                 .map(shoeId -> shoeService.findById(shoeId)
                         .orElseThrow(() -> new ShoeNotFoundException("Shoe not found with ID: " + shoeId)))
                 .toList();
 
-        // Validate the payment method
+
         PaymentMethod paymentMethod = paymentService.findPaymentMethodById(paymentId)
                 .orElseThrow(() -> new PaymentMethodNotFoundException());
 
-        // Calculate the total price
+
         double totalPrice = shoes.stream()
                 .mapToDouble(Shoe::getPrice)
                 .sum();
 
-        // Create and save the order
+
         Order order = new Order();
         order.setUser(user);
         order.setShoes(shoes);
         order.setPaymentMethod(paymentMethod);
         order.setPrice(totalPrice);
-        order.setStatus("PLACED"); // Default status for a new order
+        order.setStatus("PLACED");
 
         return orderRepository.save(order);
     }

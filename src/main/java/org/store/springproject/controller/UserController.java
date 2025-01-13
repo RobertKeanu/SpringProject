@@ -30,13 +30,14 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
     }
-    @RequestMapping(value = "/{username}/get-user-by-name", method = RequestMethod.GET)
+    @GetMapping("/{username}/get-user-by-name")
     public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        Optional<User> user = userService.findByUsername(username);
-        try{
-            return ResponseEntity.ok(user.get());
-        }catch (UserNotFoundException e){
+        Optional<User> userOpt = userService.findByUsername(username);
+        if (userOpt.isPresent()) {
+            return ResponseEntity.ok(userOpt.get());
+        } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
 }
