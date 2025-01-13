@@ -29,7 +29,7 @@ public class CategoryController {
                         Shoe shoe = new Shoe();
                         shoe.setShoeName(shoeDto.getName());
                         shoe.setPrice(shoeDto.getPrice());
-                        shoe.setCategory(category); // Set the relationship explicitly if needed
+                        shoe.setCategory(category);
                         return shoe;
                     })
                     .collect(Collectors.toList());
@@ -37,7 +37,7 @@ public class CategoryController {
         }
         Category savedCategory = categoryService.createCategory(category);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new CategoryDto(savedCategory.getName(), null)); // Return only relevant data
+                .body(new CategoryDto(savedCategory.getName(), null));
     }
 
 
