@@ -28,7 +28,6 @@ public class OrderController {
     @PostMapping("/create-order")
     public ResponseEntity<Order> placeOrder(@RequestBody OrderRequestDto orderDto) {
         try {
-            // Validate and create order
             Order order = orderService.placeOrder(orderDto.getUsername(), orderDto.getShoeIds(), orderDto.getPaymentMethodId());
             return ResponseEntity.status(HttpStatus.CREATED).body(order);
         } catch (ShoeNotFoundException | PaymentMethodNotFoundException | UserNotFoundException e) {
