@@ -34,7 +34,7 @@ class UserServiceTest {
 
     @Test
     void createUser_Success() throws Exception {
-        String username = "john_doe";
+        String username = "testuser12";
         String rawPassword = "password123";
 
         when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
@@ -51,7 +51,7 @@ class UserServiceTest {
 
     @Test
     void createUser_AlreadyExists() {
-        String username = "john_doe";
+        String username = "testuser12";
         String password = "password123";
 
         when(userRepository.findByUsername(username))
@@ -66,7 +66,7 @@ class UserServiceTest {
 
     @Test
     void findByUsername_Success() {
-        String username = "john_doe";
+        String username = "testuser12";
         User user = new User(username, "someHash");
         when(userRepository.findByUsername(username)).thenReturn(Optional.of(user));
 
