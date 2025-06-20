@@ -1,6 +1,7 @@
 package org.store.springproject.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.store.springproject.model.Category;
 import org.store.springproject.model.Shoe;
@@ -10,6 +11,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final ShoeService shoeService;
@@ -22,6 +24,7 @@ public class CategoryService {
     }
     public Category createCategory(Category category) {
        //Category category = new Category(categoryName);
+        log.info("Saving the category with name {}", category);
         return categoryRepository.save(category);
     }
 }

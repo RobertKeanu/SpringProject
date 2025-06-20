@@ -1,6 +1,7 @@
 package org.store.springproject.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.store.springproject.exception.NoShoesFoundException;
 import org.store.springproject.exception.ShoeAlreadyExistsException;
 import org.store.springproject.model.Shoe;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class ShoeService {
     @Autowired
     private final ShoeRepository shoeRepository;
@@ -25,6 +27,7 @@ public class ShoeService {
         return shoe;
     }
     public List<String> getShoeNames() throws NoShoesFoundException {
+        log.info("Showing all the names for the available shoes");
         return shoeRepository.getShoeNames();
     }
     public int updateShoePrice(Long id, double price)
@@ -46,10 +49,15 @@ public class ShoeService {
         if(shoeRepository.findByShoeName(shoeName).isPresent()) {
             throw new ShoeAlreadyExistsException();
         }
+        log.info("Creating new shoe with name " + shoeName);
         Shoe shoe = new Shoe(shoeName,size,stock,price);
         return shoeRepository.save(shoe);
     }
     public void deleteShoe(Long shoeId) {
         shoeRepository.deleteById(shoeId);
     }
+    public List<Shoe> findAllShoes() {
+        return shoeRepository.findAll();
+    }
+
 }

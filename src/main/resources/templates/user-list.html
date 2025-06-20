@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head><title>Utilizatori</title></head>
+<body>
+<h2>Lista de utilizatori</h2>
+
+<table>
+    <tr>
+        <th>
+            <a th:href="@{/users-list(sort='username', dir=${reverseDir}, page=0, size=${userPage.size})}">
+                Username
+            </a>
+        </th>
+        <th>Password</th>
+    </tr>
+    <tr th:each="user : ${userPage.content}">
+        <td th:text="${user.username}"></td>
+        <td th:text="${user.password}"></td>
+    </tr>
+</table>
+
+<div>
+    <span>Pagina: [[${currentPage} + 1]] / [[${userPage.totalPages}]]</span><br>
+
+    <a th:if="${currentPage > 0}" th:href="@{/users-list(page=${currentPage - 1}, size=${userPage.size}, sort=${sort}, dir=${dir})}">Anterior</a>
+    <a th:if="${currentPage + 1 < userPage.totalPages}" th:href="@{/users-list(page=${currentPage + 1}, size=${userPage.size}, sort=${sort}, dir=${dir})}">Următor</a>
+</div>
+
+</body>
+</html>

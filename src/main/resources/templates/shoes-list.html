@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista pantofilor</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<h2>Pantofi în stoc</h2>
+
+<div th:if="${successMessage}" th:text="${successMessage}" style="color:green; font-weight: bold;"></div>
+<div th:if="${errorMessage}" th:text="${errorMessage}" style="color:red; font-weight: bold;"></div>
+
+<table>
+    <tr>
+        <th>Nume</th>
+        <th>Mărime</th>
+        <th>Stoc</th>
+        <th>Preț</th>
+        <th>Acțiuni</th>
+    </tr>
+    <tr th:each="shoe : ${shoes}">
+        <td th:text="${shoe.shoeName}">N/A</td>
+        <td th:text="${shoe.size}">0</td>
+        <td th:text="${shoe.stock}">0</td>
+        <td th:text="${shoe.price}">0.00</td>
+        <td>
+            <a th:href="@{'/shoes/delete/' + ${shoe.id}}"
+               onclick="return confirm('Ești sigur că vrei să ștergi acest pantof?')">Șterge</a>
+        </td>
+    </tr>
+</table>
+
+<br>
+
+<a href="/shoes/new">
+    <button>Adaugă adidas nou</button>
+</a>
+
+</body>
+</html>

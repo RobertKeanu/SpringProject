@@ -39,7 +39,7 @@ class UserControllerTest {
 
     @Test
     void createAccount_Success() throws Exception {
-        String username = "john_doe";
+        String username = "testuser12";
         String password = "password123";
         UserDto userDto = new UserDto(username, password);
 
@@ -47,7 +47,7 @@ class UserControllerTest {
 
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{ \"username\": \"john_doe\", \"password\": \"password123\" }"))
+                        .content("{ \"username\": \"testuser12\", \"password\": \"password123\" }"))
                 .andExpect(status().isCreated());
 
         verify(userService, times(1)).createUser(username, password);
@@ -55,7 +55,7 @@ class UserControllerTest {
 
     @Test
     void createAccount_UserAlreadyExists() throws Exception {
-        String username = "john_doe";
+        String username = "testuser12";
         String password = "password123";
 
         doThrow(new UserAlreadyExistsException("User already exists"))
@@ -63,7 +63,7 @@ class UserControllerTest {
 
         mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"username\":\"john_doe\",\"password\":\"password123\"}"))
+                        .content("{\"username\":\"testuser12\",\"password\":\"password123\"}"))
                 .andExpect(status().isConflict());
 
         verify(userService, times(1)).createUser(username, password);
@@ -71,11 +71,11 @@ class UserControllerTest {
 
     @Test
     void getUserByUsername_Success() throws Exception {
-        String username = "john_doe";
+        String username = "testuser12";
         User user = new User(username, "encodedPass");
         when(userService.findByUsername(username)).thenReturn(Optional.of(user));
 
-        mockMvc.perform(get("/john_doe/get-user-by-name"))
+        mockMvc.perform(get("/testuser12/get-user-by-name"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value(username));
 
