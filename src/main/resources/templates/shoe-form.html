@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head><title>Adaugă pantof</title></head>
+<body>
+<h2>Adaugă un pantof nou</h2>
+
+<form th:action="@{/shoes/create}" method="post" th:object="${shoeDto}">
+    <label>Nume:</label>
+    <input type="text" th:field="*{name}"><br>
+    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red;"></div>
+
+    <label>Mărime:</label>
+    <input type="number" th:field="*{size}"><br>
+    <div th:if="${#fields.hasErrors('size')}" th:errors="*{size}" style="color:red;"></div>
+
+    <label>Stoc:</label>
+    <input type="number" th:field="*{stock}"><br>
+    <div th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}" style="color:red;"></div>
+
+    <label>Preț:</label>
+    <input type="number" step="0.01" th:field="*{price}"><br>
+    <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color:red;"></div>
+
+    <button type="submit">Salvează</button>
+</form>
+
+<div th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></div>
+<div th:if="${successMessage}" th:text="${successMessage}" style="color:green;"></div>
+</body>
+</html>

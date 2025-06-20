@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Creare cont</title>
+</head>
+<body>
+<h2>Creare cont nou</h2>
+
+<form th:action="@{/register-user}" method="post" th:object="${userDto}">
+    <label th:for="*{username}">Username:</label>
+    <input type="text" th:field="*{username}" required><br>
+    <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+
+    <label th:for="*{password}">Parola:</label>
+    <input type="password" th:field="*{password}" required><br>
+    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+
+    <button type="submit">Creează cont</button>
+</form>
+
+<div th:if="${successMessage}" th:text="${successMessage}" style="color:green;"></div>
+<div th:if="${errorMessage}" th:text="${errorMessage}" style="color:red;"></div>
+
+</body>
+</html>

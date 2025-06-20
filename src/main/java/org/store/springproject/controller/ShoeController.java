@@ -19,6 +19,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+
 public class ShoeController {
     private final ShoeService shoeService;
     private final ReviewService reviewService;
@@ -61,6 +62,7 @@ public class ShoeController {
     public ResponseEntity<List<Shoe>> getShoesRange(@RequestParam double minPrice, @RequestParam double maxPrice) throws NoShoesFoundException {
         List<Shoe> shoes;
         shoes = shoeService.findShoesByPriceRange(minPrice, maxPrice);
+        log.info("Showing shoes in the price interval");
         return ResponseEntity.ok(shoes);
     }
 }
