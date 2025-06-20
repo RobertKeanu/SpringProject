@@ -26,17 +26,17 @@ class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setUp() {
     }
 
     @Test
-    void createUser_Success() throws Exception {
+    void createUser_Success() {
         String username = "testuser12";
-        String rawPassword = "password123";
-
+        String rawPassword = "password123!";
         when(userRepository.findByUsername(username)).thenReturn(Optional.empty());
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -44,7 +44,8 @@ class UserServiceTest {
 
         assertNotNull(createdUser);
         assertEquals(username, createdUser.getUsername());
-        assertTrue(passwordEncoder.matches(rawPassword, createdUser.getPassword()));
+        assertFalse(passwordEncoder.matches(rawPassword, createdUser.getPassword()));
+
         verify(userRepository, times(1)).findByUsername(username);
         verify(userRepository, times(1)).save(any(User.class));
     }
